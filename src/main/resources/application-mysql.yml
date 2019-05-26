@@ -1,0 +1,20 @@
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url:  jdbc:mysql://localhost/online_blog?useSSL=false&characterEncoding=utf8&serverTimezone=Asia/Shanghai
+    username: root
+    password: qwerty
+
+
+  jpa:
+    database: mysql
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+    database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
+    properties:
+       hibernate.format_sql: true
+       hibernate.naming.physical-strategy: org.hibernate.scripts.model.naming.PhysicalNamingStrategyStandardImpl
+       hibernate.cache.use_second_level_cache: false
+       #hibernate.search.default.directory_provider: filesystem
+       #hibernate.search.default.indexBase: ${site.location}/storage/indexes

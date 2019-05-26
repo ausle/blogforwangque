@@ -1,0 +1,64 @@
+
+server:
+  port: 8080
+spring:
+  profiles:
+    active: mysql
+
+
+  freemarker:
+    cache: false
+    check-template-location: true
+    charset: utf-8
+    settings:
+        classic_compatible: true #处理空值
+        template_exception_handler: rethrow
+        template_update_delay: 0
+        datetime_format: yyyy-MM-dd HH:mm
+        number_format: 0.##
+        auto_import: /utils.ftl as utils
+
+
+#有关站点的配置
+site:
+    version: 3.5.0
+    location: ${user.dir}
+    options:
+        theme: default
+        site_logo: /dist/images/logo/logo.png
+        site_favicon: /dist/images/logo/m.png
+        storage_max_width: 800
+        storage_limit_size: 2
+        thumbnail_channel_size: 200x112
+        thumbnail_post_size: 360x200
+
+
+logging:
+  level:
+    root: INFO
+  file: ./logs/blog.log
+  pattern:
+    console: '%d{yyyy/MM/dd-HH:mm:ss} [%thread] %-5level %clr(%logger){cyan} %clr(%msg%n){green}'
+    file: '%d{yyyy/MM/dd-HH:mm} [%thread] %-5level %logger- %msg%n'
+
+
+shiro:
+  web:
+    enabled: true
+  rememberMeManager:
+          cookie:
+              maxAge: 604800
+
+
+
+
+
+
+
+
+
+
+
+
+
+
