@@ -76,7 +76,7 @@ public class TemplateModelUtils {
         return null;
     }
 
-    public static Long converLong(TemplateModel model) throws TemplateModelException {
+    public static Long convertLong(TemplateModel model) throws TemplateModelException {
         if (null != model) {
             if (model instanceof TemplateNumberModel) {
                 return ((TemplateNumberModel) model).getAsNumber().longValue();

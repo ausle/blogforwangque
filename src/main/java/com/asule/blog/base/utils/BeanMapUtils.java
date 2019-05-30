@@ -11,9 +11,11 @@ package com.asule.blog.base.utils;
 
 
 import com.asule.blog.base.lang.Consts;
+import com.asule.blog.modules.po.Comment;
 import com.asule.blog.modules.po.Post;
 import com.asule.blog.modules.po.User;
 import com.asule.blog.modules.vo.AccountProfile;
+import com.asule.blog.modules.vo.CommentVO;
 import com.asule.blog.modules.vo.PostVO;
 import com.asule.blog.modules.vo.UserVO;
 import org.springframework.beans.BeanUtils;
@@ -41,13 +43,13 @@ public class BeanMapUtils {
         passport.setStatus(po.getStatus());
         return passport;
     }
-//
-//    public static CommentVO copy(Comment po) {
-//        CommentVO ret = new CommentVO();
-//        BeanUtils.copyProperties(po, ret);
-//        return ret;
-//    }
-//
+
+
+    public static CommentVO copy(Comment po) {
+        CommentVO ret = new CommentVO();
+        BeanUtils.copyProperties(po, ret);
+        return ret;
+    }
 
 
     //po----vo  by post
@@ -85,10 +87,10 @@ public class BeanMapUtils {
         String[] orders;
         switch (order) {
             case Consts.order.HOTTEST:
-                orders = new String[]{"comments", "views", "created"};
+                orders = new String[]{"views"};
                 break;
             case Consts.order.NEWEST:
-                orders = new String[]{"weight", "created"};
+                orders = new String[]{"created"};
                 break;
             default:
                 orders = new String[]{};

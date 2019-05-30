@@ -42,13 +42,11 @@ public class WebMvcConfiguration implements WebMvcConfigurer{
         registry.addResourceHandler("/dist/**")
                 .addResourceLocations("classpath:/static/dist/");
 
-
         registry.addResourceHandler("/storage/avatars/**")
                 .addResourceLocations(location + "/storage/avatars/");
         registry.addResourceHandler("/storage/thumbnails/**")
                 .addResourceLocations(location + "/storage/thumbnails/");
     }
-
 
 
     @Override

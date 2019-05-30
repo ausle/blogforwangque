@@ -46,9 +46,10 @@ public interface Consts {
 
 
 
-	/*0隐藏的*/
+	/*1,显示，0隐藏的*/
 	int STATUS_CHANNEL_NORMAL=1;
 	int STATUS_CHANNEL_CLOSE=0;
+	int IGNORE_CHANNEL_STATUS = -1;
 
 
 
@@ -101,10 +102,10 @@ public interface Consts {
 	 */
 	int READED = 1;
 
+
+	/*about comment*/
 	int MESSAGE_EVENT_FAVOR_POST = 1; // 有人喜欢了你的文章
-
 	int MESSAGE_EVENT_COMMENT = 3; // 有人评论了你
-
 	int MESSAGE_EVENT_COMMENT_REPLY = 4; // 有人回复了你
 
 	String CACHE_USER = "userCaches";

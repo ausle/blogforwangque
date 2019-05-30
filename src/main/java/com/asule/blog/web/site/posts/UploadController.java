@@ -74,7 +74,6 @@ public class UploadController extends BaseController{
         }
 
 
-
         //  1个字节有8位   1kb=1024b     1mb=1024kb     2
         if (file.getSize() > (Long.parseLong(limitSize) * 1024 * 1024)) {
             return result.error(errorInfo.get("SIZE"));
@@ -83,12 +82,11 @@ public class UploadController extends BaseController{
         // 保存图片
         try {
             String path="";
-
             if (StringUtils.isNotBlank(crop)) {
-//                Integer[] imageSize = siteOptions.getIntegerArrayValue(crop, Consts.SEPARATOR_X);
-//                int width = ServletRequestUtils.getIntParameter(request, "width", imageSize[0]);
-//                int height = ServletRequestUtils.getIntParameter(request, "height", imageSize[1]);
-//                path = storageFactory.get().storeScale(file, Consts.thumbnailPath, width, height);
+                Integer[] imageSize = siteOptions.getIntegerArrayValue(crop, Consts.SEPARATOR_X);
+                int width = ServletRequestUtils.getIntParameter(request, "width", imageSize[0]);
+                int height = ServletRequestUtils.getIntParameter(request, "height", imageSize[1]);
+                path = storageFactory.get().storeScale(file, Consts.thumbnailPath, width, height);
             } else {
                 path = storageFactory.get().storeScale(file, Consts.thumbnailPath, size);
             }
@@ -96,7 +94,6 @@ public class UploadController extends BaseController{
             result.setName(fileName);
             result.setPath(path);
             result.setSize(file.getSize());
-
         } catch (Exception e) {
             result.error(errorInfo.get("UNKNOWN"));
             e.printStackTrace();

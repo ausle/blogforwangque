@@ -30,26 +30,36 @@ public class IndexController extends BaseController {
     private ChannelService channelService;
 
 
-
     @GetMapping(value= {"/","/index"})
     public String root(ModelMap model, HttpServletRequest request) {
-
 
         String order = ServletRequestUtils.getStringParameter(request, "order", Consts.order.NEWEST);
         int pageNo = ServletRequestUtils.getIntParameter(request, "pageNo", 1);
         int channelId = ServletRequestUtils.getIntParameter(request, "channelId", 0);//默认获取所有类别文章
-
+        long tagId = ServletRequestUtils.getLongParameter(request, "tagId", 0);
 
 
         model.put("channelId",channelId);
+        model.put("tagId",tagId);
         model.put("order",order);
         model.put("pageNo",pageNo);
 
         String requestURI = request.getRequestURI();
-        model.put("requestURI",requestURI+"?order="+order+"&channelId="+channelId);
+        model.put("requestURI",requestURI);
 
-        //
+
+
+        model.put("sortURI",requestURI+"?channelId="+channelId+"&tagId="+tagId);
+        model.put("pageURI",requestURI+"?order="+order+"&channelId="+channelId+"&tagId="+tagId);
 
         return view(Views.INDEX);
     }
 }
+
+/*
+
+
+
+
+*/
+

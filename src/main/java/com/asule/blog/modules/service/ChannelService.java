@@ -10,7 +10,30 @@ public interface ChannelService {
 
     List<Channel> findAll(Integer status);
 
-    List<Channel> findById(Integer status,Integer id);
+    Channel findById(Integer status,Integer id);
 
     Map<Integer,Channel> findByIds(Set<Integer> ids,Integer status);
+
+    /**
+     * 获得最大权重
+     * @param channelId
+     * @return
+     */
+    int setMaxWeight(Integer channelId);
+
+    /**
+     * 删除栏目
+     * @param channelId
+     * @return
+     */
+    int deleteChannel(Integer channelId);
+
+
+    /**
+     * 更新栏目
+     * @return
+     */
+    int update(Channel channel);
+
+
 }

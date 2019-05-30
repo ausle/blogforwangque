@@ -2,17 +2,40 @@ seajs.config({
     base: _MTONS.BASE_PATH,
     alias: {
 
+        /*js/modules为我自己写的js*/
 
-        'main':'dist/js/main',
 
+        /**/
+        'main':'dist/js/modules/main',
+        'authc': 'dist/js/modules/authc',
+        'comment': 'dist/js/modules/comment',
+        'plugins': 'dist/js/modules/plugins',
+        'view':'dist/js/modules/view',
+        // "autohidingnavbar":"dist/js/modules/autohidingnavbar",
 
+        /*写markdown*/
+        'markdown': 'dist/js/modules/markdown',
+        'editingmarkdown': 'dist/js/modules/editingmarkdown',
+
+        /*发布文章*/
         'post': 'dist/js/modules/post',
         'tagsinput': 'vendors/bootstrap-tagsinput/bootstrap-tagsinput',
 
 
+        /*一键分享工具*/
+        'share': 'vendors/share.js/js/social-share.min.js',
+        'share-css': 'vendors/share.js/css/share.min.css',
 
-        'markdown': 'dist/js/modules/markdown',
-        'editingmarkdown': 'dist/js/editingmarkdown',
+        /*highlight.pack.js可以实现代码高亮，github.css是具体的样式*/
+        'highlight':'vendors/highlight/highlight.pack.js',
+        'highlight-css': 'vendors/highlight/styles/github.css',
+
+
+        /*表情符号插件*/
+        'owo': 'vendors/owo/OwO.min.js',
+        'owo-css': 'vendors/owo/OwO.min.css',
+
+
 
         //codecodemirror
         'codemirror': 'vendors/codemirror/lib/codemirror.js',

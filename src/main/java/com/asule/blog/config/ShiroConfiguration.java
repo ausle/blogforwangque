@@ -64,7 +64,7 @@ public class ShiroConfiguration {
         hashMap.put("/login","anon");
         hashMap.put("/register","anon");
 
-        hashMap.put("/**","authc");
+        hashMap.put("/**","anon");
         shiroFilter.setFilterChainDefinitionMap(hashMap);
 
         return shiroFilter;

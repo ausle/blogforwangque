@@ -12,7 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Date;
+import java.util.*;
 
 @Transactional(readOnly = true)
 @Service
@@ -77,4 +77,42 @@ public class TagServiceImpl implements TagService {
     public void deteleMappingByPostId(long postId) {
 
     }
+
+
+    /*
+
+        文章1     标签1  标签2
+        文章2     标签1
+
+    */
+
+
+    @Override
+    public List<Tag> findTagsByPost(long postId) {
+        List<PostTag> postTagList = postTagRepository.findByPostId(postId);
+        List<Tag> tags=new ArrayList<>();
+        postTagList.forEach(postTag ->
+                        tags.add(tagRepository.findById(postTag.getTagId()).get())
+        );
+
+        return tags;
+    }
+
+    @Override
+    public List<Tag> findTags() {
+        return tagRepository.findAll();
+    }
+
+//    @Override
+//    public Set<String> getAllTagName() {
+//        Set<String> names=new HashSet<>();
+//        tagRepository.findAll().forEach(e->names.add(e.getName()));
+//        return null;
+//    }
+//
+//    @Override
+//    public String getOneTagName(long tagId) {
+//
+//        return tagRepository.findNameById(tagId);
+//    }
 }

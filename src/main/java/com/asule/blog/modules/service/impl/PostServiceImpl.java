@@ -23,13 +23,17 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
+import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.criteria.*;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+@Transactional
 @Service
 public class PostServiceImpl implements PostService{
 
@@ -62,10 +66,12 @@ public class PostServiceImpl implements PostService{
     private ChannelService channelService;
 
 
-    @Override
-    @Transactional
-    public long post(PostVO postVO) {
+    @Autowired
+    private UserRepository userRepository;
 
+
+    @Override
+    public long post(PostVO postVO) {
         Post po = new Post();
         BeanUtils.copyProperties(postVO, po);
         po.setCreated(new Date());
@@ -101,11 +107,130 @@ public class PostServiceImpl implements PostService{
     }
 
     @Override
-    public Page<PostVO> paging(Pageable pageable, Set<Integer> includeChannelIds) {
+    public void update(PostVO postVO) {
+        Optional<Post> optional = postRepository.findById(postVO.getId());
+
+        if (optional.isPresent()){
+            Post po = optional.get();
+
+            po.setTitle(postVO.getTitle());//标题
+            po.setChannelId(postVO.getChannelId());
+            po.setThumbnail(postVO.getThumbnail());
+            po.setStatus(postVO.getStatus());
+
+            // 处理摘要
+            if (StringUtils.isBlank(postVO.getSummary())) {
+                po.setSummary(trimSummary(postVO.getContent()));
+            } else {
+                po.setSummary(postVO.getSummary());
+            }
+
+            po.setTags(postVO.getTags());//标签
+
+
+            //保存文章内容
+            PostAttribute attr = new PostAttribute();
+            attr.setContent(postVO.getContent());
+            attr.setId(po.getId());
+            postAttributeRepository.save(attr);
+
+
+            //更新tag，post-tag两张表相关数据
+            tagService.batchUpdate(po.getTags(),po.getId());
+
+            countResource(po.getId(), null, postVO.getContent());
+
+        }
+
+
+    }
+
+    @Override
+    public Page<PostVO> paging(Pageable pageable, Set<Integer> includeChannelIds,Set<Long> postIds) {
         //实现分页查询
-        Page<Post> pages = postRepository.findAllByChannelIdIn(includeChannelIds,pageable);
+        Page<Post> pages = postRepository.findAllByChannelIdInAndIdIn(includeChannelIds,postIds,pageable);
         return  new PageImpl<>(toPostVO(pages.getContent()),pageable,pages.getTotalElements());
     }
+
+    @Override
+    public Page<PostVO> paging4Admin(Pageable pageable, Integer channelId, String title) {
+        //实现带条件查询的分页
+        Specification specification= new Specification<PostVO>() {
+            @Nullable
+            @Override
+            public Predicate toPredicate(Root root, CriteriaQuery criteriaQuery, CriteriaBuilder criteriaBuilder) {
+                //root代表实体类对象。从中获取where条件的判断属性
+                //criteriaBuilder获取criteria的工厂，获取Predicate，Predicate是条件查询类
+                Predicate conjunction = criteriaBuilder.conjunction();
+
+                //添加多个条件
+                List<Expression<Boolean>> expressions = conjunction.getExpressions();
+                if (channelId>0){
+                    expressions.add(criteriaBuilder.equal(root.get("channelId").as(Integer.class),channelId));
+                }
+
+                if (!StringUtils.isBlank(title)){
+                    expressions.add(criteriaBuilder.like(root.get("title").as(String.class),"%"+title+"%"));
+                }
+
+                return conjunction;
+            }
+        };
+        Page<Post> pages= postRepository.findAll(specification,pageable);
+        return  new PageImpl<>(toPostVO(pages.getContent()),pageable,pages.getTotalElements());
+    }
+
+    @Override
+    public void delete(Collection<Long> ids) {
+
+
+        List<Post> postList = postRepository.findAllById(ids);
+
+
+        postList.forEach(post -> {
+
+            postRepository.delete(post);
+
+
+        });
+    }
+
+
+    @Override
+    public PostVO get(long id) {
+        Optional<Post> optional = postRepository.findById(id);
+        if (optional.isPresent()){
+
+            Post post = optional.get();
+
+            PostVO postVO = BeanMapUtils.copy(post);
+
+            postVO.setChannel(channelRepository.findById(postVO.getChannelId()).get());
+            User user = userRepository.findById(postVO.getAuthorId()).get();
+            postVO.setAuthor(BeanMapUtils.copy(user));
+
+            PostAttribute postAttribute = postAttributeRepository.findById(postVO.getId()).get();
+            postVO.setContent(postAttribute.getContent());
+
+            return postVO;
+        }
+        return null;
+    }
+
+
+
+    @Override
+    public void identityViews(long id) {
+        postRepository.identityViews(id,Consts.IDENTITY_STEP);
+    }
+
+    @Override
+    public void identityComments(long id) {
+
+        postRepository.identityComments(id,Consts.IDENTITY_STEP);
+    }
+
+
 
 
     private List<PostVO> toPostVO(List<Post> posts){
@@ -120,27 +245,19 @@ public class PostServiceImpl implements PostService{
             postVOS.add(BeanMapUtils.copy(post));
         });
 
-
         buildUsers(uids,postVOS);
         buildGroups(channelIds,postVOS);
-
-
-
         return postVOS;
     }
 
     private void buildGroups(HashSet<Integer> channelIds, List<PostVO> postVOS) {
-
         Map<Integer, Channel> channelMap = channelService.findByIds(channelIds, Consts.STATUS_CHANNEL_NORMAL);
-
         postVOS.forEach(postVO -> {
             postVO.setChannel(channelMap.get(postVO.getChannelId()));
         });
-
     }
 
     private void buildUsers(HashSet<Long> uids, List<PostVO> postVOS) {
-
         Map<Long, UserVO> map = userService.findByIdIn(uids);
 
         postVOS.forEach(postVO -> {
@@ -186,7 +303,6 @@ public class PostServiceImpl implements PostService{
             List<Resource> resources = resourceRepository.findAllByMd5In(adds);
             List<PostResource> prs=new ArrayList();
             for (Resource resource:resources) {
-
                 PostResource pr = new PostResource();
 
                 pr.setPath(resource.getPath());
@@ -198,14 +314,9 @@ public class PostServiceImpl implements PostService{
             //向文章图片表写入相关数据
             postResourceRepository.saveAll(prs);
 
-            //引用的资源，每个资源的数量都+1。多次引用某个资源，adds中就有多个对应的MD5，那么会多次的+1。
+            //引用的资源，每个资源的数量都+1。多次引用某个资源，adds中就有多个对应的MD5，但是并不会多次的+1。
             resourceRepository.updateAmount(adds, 1);
         }
-
-
-
-
-
     }
 
 

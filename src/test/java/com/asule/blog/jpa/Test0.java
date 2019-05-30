@@ -2,10 +2,15 @@ package com.asule.blog.jpa;
 
 
 import com.asule.blog.BlogApplication;
+import com.asule.blog.base.lang.Consts;
+import com.asule.blog.base.utils.BeanMapUtils;
+import com.asule.blog.modules.po.Channel;
 import com.asule.blog.modules.po.Post;
 import com.asule.blog.modules.repository.PostRepository;
+import com.asule.blog.modules.service.ChannelService;
 import com.asule.blog.modules.service.PostService;
-import com.asule.blog.modules.template.directive.ContentsDirective;
+import com.asule.blog.modules.service.PostTagService;
+import com.asule.blog.modules.vo.PostVO;
 import com.asule.blog.po.Person;
 import com.asule.blog.repository.TestRepository;
 import org.junit.Test;
@@ -22,6 +27,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import javax.persistence.criteria.*;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 
@@ -131,8 +137,73 @@ public class Test0 {
         ids.add(1);
         ids.add(2);
 
-        postService.paging(pageable,ids);
+//        postService.paging(pageable,ids);
     }
+
+
+    @Autowired
+    private ChannelService channelService;
+    @Autowired
+    private PostTagService postTagService;
+
+    @Test
+    public void test4(){
+
+//        int pageNo=1-1;
+//        int pageSize=5;
+//
+//        Integer channelId = 0;
+//        String order = Consts.order.NEWEST;
+//        Long tagId =5L;
+//
+//        List<Channel> channels;
+//
+//        //为0获取所有类型的文章
+//        if (channelId==0){
+//            channels= channelService.findAll(Consts.STATUS_CHANNEL_NORMAL);
+//        }else{
+////            channels= channelService.findById(Consts.STATUS_CHANNEL_NORMAL,channelId);
+//        }
+//
+//
+//        Set<Long> postIds;
+//        //为0获取所有标签的文章
+//        if (tagId==0){
+//            postIds = postTagService.findAllPostId();
+//        }else{
+//            postIds = postTagService.findPostIdByTagId(tagId);
+//        }
+//
+//        Set<Integer> channelIds = new HashSet<>();
+//        if (channels!=null){
+//            channels.forEach(channel -> channelIds.add(channel.getId()));
+//        }
+//
+//        //包装一个分页对象Pageable
+//        Pageable pageable =
+//                new PageRequest(pageNo,pageSize,Sort.by(Sort.Direction.DESC, BeanMapUtils.postOrder(order)));
+//        Page<PostVO> postVOS = postService.paging(pageable, channelIds,postIds);
+//
+//
+//        System.out.println(postVOS);
+    }
+
+
+
+    @Test
+    public void test5(){
+
+        int pageNo=1-1;
+        int pageSize=5;
+        String[] order=new String[]{"weight", "created"};
+        Pageable pageable=new PageRequest(pageNo,pageSize,Sort.by(Sort.Direction.DESC,order));
+
+        Page<PostVO> page = postService.paging4Admin(pageable, 0, "女");
+
+        System.out.println(page);
+
+    }
+
 
 
 }

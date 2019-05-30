@@ -11,12 +11,19 @@ import org.apache.shiro.authc.LockedAccountException;
 import org.apache.shiro.authc.UnknownAccountException;
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.subject.Subject;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
+import org.springframework.web.bind.ServletRequestUtils;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
+
+import javax.servlet.http.HttpServletRequest;
 
 @Slf4j
 public class BaseController {
 
     protected String view(String view) {
-        return view;
+        return "/default"+view;
     }
 
 
@@ -43,6 +50,30 @@ public class BaseController {
         return ret;
     }
 
+
+    public boolean isAuthenticated(){
+        Subject subject = SecurityUtils.getSubject();
+        if (subject!=null){
+            return subject.isAuthenticated()||subject.isRemembered();
+        }
+        return false;
+    }
+
+
+    protected PageRequest wrapPageable() {
+        return wrapPageable(null);
+    }
+
+    protected PageRequest wrapPageable(Sort sort) {
+        HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
+        int pageSize = ServletRequestUtils.getIntParameter(request, "pageSize", 10);
+        int pageNo = ServletRequestUtils.getIntParameter(request, "pageNo", 1);
+
+        if (null == sort) {
+            sort = Sort.unsorted();
+        }
+        return PageRequest.of(pageNo - 1, pageSize, sort);
+    }
 
     protected AccountProfile getProfile() {
         Subject subject = SecurityUtils.getSubject();

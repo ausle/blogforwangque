@@ -24,42 +24,69 @@ public class ChannelServiceImpl implements ChannelService{
     public List<Channel> findAll(Integer status) {
         Sort sort = Sort.by(Sort.Direction.DESC, "weight", "id");
         List<Channel> list;
-        if (status > Consts.IGNORE) {
-            list = channelRepository.findAllByStatus(status, sort);
-        } else {
+        if (status==Consts.IGNORE_CHANNEL_STATUS){
             list = channelRepository.findAll(sort);
+        }else {
+            list = channelRepository.findAllByStatus(status, sort);
         }
         return list;
     }
 
+
+
+
+
     @Override
-    public List<Channel> findById(Integer status,Integer id) {
+    public Channel findById(Integer status,Integer id) {
         Sort sort = Sort.by(Sort.Direction.DESC, "weight", "id");
-        List<Channel> list;
-        if (status > Consts.IGNORE) {
-            list = channelRepository.findAllByStatusAndId(status, id,sort);
-        } else {
-            list = channelRepository.findAll(sort);
+        Channel channel;
+        if (status==Consts.IGNORE_CHANNEL_STATUS){
+            channel = channelRepository.findById(id).get();
+        }else{
+            channel = channelRepository.findAllByStatusAndId(status, id,sort);
         }
-        return list;
+        return channel;
     }
 
     @Override
     public Map<Integer, Channel> findByIds(Set<Integer> ids, Integer status) {
-
         if (ids==null||ids.isEmpty()){
             return Collections.emptyMap();
         }
-
         List<Channel> channelList = channelRepository.findByIdIn(ids);
-
         Map<Integer, Channel> map=new HashMap<>();
-
         channelList.forEach(channel -> {
             map.put(channel.getId(),channel);
         });
-
-
         return map;
     }
+
+    @Transactional
+    @Override
+    public int setMaxWeight(Integer channelId) {
+
+        Channel channel = channelRepository.findById(channelId).get();
+        int maxWeight = channelRepository.getMaxWeight();
+        channel.setWeight(maxWeight+1);
+
+        channelRepository.save(channel);
+
+        return channel.getWeight();
+    }
+
+    @Transactional
+    @Override
+    public int deleteChannel(Integer channelId) {
+        channelRepository.deleteById(channelId);
+        return 0;
+    }
+
+    @Transactional
+    @Override
+    public int update(Channel channel) {
+        channelRepository.save(channel);
+        return channel.getId();
+    }
+
+
 }

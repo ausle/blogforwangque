@@ -39,6 +39,7 @@ public class ContextStartup implements ApplicationRunner,ServletContextAware{
 
     public void reloadOptions() {
         List<Options> dboptions = optionsService.findAll();
+
         Map<String, String> map = new HashMap<>();
         dboptions.forEach(opt -> {
             if (StringUtils.isNoneBlank(opt.getKey(), opt.getValue())) {

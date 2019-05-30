@@ -18,7 +18,7 @@ public abstract class BaseMethod implements TemplateMethodModelEx {
     }
 
     public Long getLong(List<TemplateModel> arguments, int index) throws TemplateModelException {
-        return TemplateModelUtils.converLong(getModel(arguments, index));
+        return TemplateModelUtils.convertLong(getModel(arguments, index));
     }
 
     public Date getDate(List<TemplateModel> arguments, int index) throws TemplateModelException {

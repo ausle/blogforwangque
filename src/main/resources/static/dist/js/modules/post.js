@@ -35,10 +35,9 @@ define(function(require, exports, module){
         },
 
         bindUpload: function () {
-
-            $('.upload-input').on('click',function () {
-                console.log("正在上传头图....");
-            });
+            // $('.upload-input').on('click',function () {
+            //     console.log("正在上传头图....");
+            // });
 
             $('.upload-input').on('change',function () {
                 console.log("正在上传头图....");
@@ -51,7 +50,7 @@ define(function(require, exports, module){
 
 
                 $.ajax({
-                    url: _MTONS.BASE_PATH + "/post/upload",
+                    url: _MTONS.BASE_PATH + "/post/upload?crop=thumbnail_post_size",
                     data: form,
                     type: "POST",
                     cache: false, //上传文件无需缓存
@@ -64,7 +63,6 @@ define(function(require, exports, module){
                             var path=result.path;
                             $("#thumbnail_image").css("background", "url(" + path + ") no-repeat scroll center 0 rgba(0, 0, 0, 0)");
                             $("#thumbnail").val(path);
-
 
                         }else {
                             layer.alert(result.message);

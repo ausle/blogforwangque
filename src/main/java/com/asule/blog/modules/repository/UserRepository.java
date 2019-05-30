@@ -21,6 +21,13 @@ public interface UserRepository extends JpaRepository<User,Long>{
 
 
 
+    @Modifying
+    @Query("update User set comments = comments + :increment where id = :id")
+    int updateComments(@Param("id") long id, @Param("increment") int increment);
+
+
+
+
     List<User> findByIdIn(Set<Long> ids);
 
 

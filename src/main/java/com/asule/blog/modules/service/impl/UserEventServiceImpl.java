@@ -34,6 +34,7 @@ public class UserEventServiceImpl implements UserEventService {
 
     @Override
     public void identityComment(Long userId, boolean plus) {
+        userRepository.updateComments(userId, (plus) ? Consts.IDENTITY_STEP : Consts.DECREASE_STEP);
     }
 
     @Override

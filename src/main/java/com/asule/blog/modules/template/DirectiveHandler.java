@@ -62,6 +62,10 @@ public class DirectiveHandler {
         return TemplateModelUtils.convertInteger(getModel(name));
     }
 
+    public Long getLong(String name) throws TemplateModelException {
+        return TemplateModelUtils.convertLong(getModel(name));
+    }
+
     public String getString(String name, String defaultValue) throws Exception {
         String result = getString(name);
         return null == result ? defaultValue : result;
@@ -69,6 +73,11 @@ public class DirectiveHandler {
 
     public Integer getInteger(String name, int defaultValue) throws Exception {
         Integer result = getInteger(name);
+        return null == result ? defaultValue : result;
+    }
+
+    public Long getLong(String name, long defaultValue) throws Exception {
+        Long result = getLong(name);
         return null == result ? defaultValue : result;
     }
 

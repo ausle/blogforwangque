@@ -26,7 +26,7 @@ public class LoginController extends BaseController{
         String view = view(Views.LOGIN);
         Result<AccountProfile> result = executeLogin(username, password, rememberMe);
         if (result.isOk()) {
-            view = String.format(Views.INDEX, result.getData().getId());
+            view = String.format(Views.REDIRECT_INDEX, result.getData().getId());
         } else {
             model.put("message", result.getMessage());
         }
