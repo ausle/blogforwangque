@@ -1,9 +1,9 @@
 spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url:  jdbc:mysql://localhost/online_blog?useSSL=false&characterEncoding=utf8&serverTimezone=Asia/Shanghai
-    username: root
-    password: qwerty
+    url:  jdbc:mysql://localhost/blog?useSSL=false&characterEncoding=utf8&serverTimezone=Asia/Shanghai
+    username: blog
+    password: blog_wangque
 
 
   jpa:
