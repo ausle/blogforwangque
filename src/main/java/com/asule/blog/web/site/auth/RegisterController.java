@@ -39,7 +39,7 @@ public class RegisterController extends BaseController{
             post.setAvatar(Consts.AVATAR);
             userService.register(post);
             Result<AccountProfile> result = executeLogin(post.getUsername(), post.getPassword(), false);
-            view = String.format(Views.REDIRECT_USER_HOME, result.getData().getId());
+            view = String.format(Views.REDIRECT_INDEX, result.getData().getId());
         } catch (Exception e) {
             model.addAttribute("post", post);
             model.put("data", Result.failure(e.getMessage()));

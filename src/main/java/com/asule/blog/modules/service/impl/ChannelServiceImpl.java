@@ -88,5 +88,16 @@ public class ChannelServiceImpl implements ChannelService{
         return channel.getId();
     }
 
+    @Override
+    public int getChannelCount() {
+        return channelRepository.getChaneelCount();
+    }
+
+    @Transactional
+    @Override
+    public void updatePostAmount(Integer channelId) {
+        channelRepository.updatePostAmount(channelId,Consts.DECREASE_STEP);
+    }
+
 
 }

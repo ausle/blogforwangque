@@ -12,22 +12,22 @@ import org.springframework.data.domain.Pageable;
 import java.util.Collection;
 import java.util.Set;
 
-/**
- * 该缓存相当于一个map。
- * key为缓存key，value为
- */
 
 
-@CacheConfig(cacheNames = Consts.CACHE_USER)
+/*
+    @Cacheable value指定缓存存放在哪块命名空间，key为该缓存的标识。
+
+    如果一个类上使用缓存的地方很多，那么在类上使用@CacheConfig(cacheNames = Consts.CACHE_USER)
+    为所有缓存统一指定一个value值、那么该类下就可以省略value值。
+*/
+@CacheConfig(cacheNames = Consts.CACHE_POST)
 public interface PostService {
 
 
     /**
      * 发布文章
      */
-    //@CacheEvict，标记需要清除缓存。每一次该方法的执行都会触发清除缓存的操作。
-    //value表示清除缓存的缓存名，key为具体缓存key。
-    //allEntries为true，表示一下子清除所有缓存。
+    //@CacheEvict，标记需要清除缓存。每一次该方法的执行都会触发清除缓存的操作。allEntries为true，表示一下子清除所有缓存。
     @CacheEvict(allEntries = true)
     long post(PostVO post);
 
@@ -43,6 +43,17 @@ public interface PostService {
      */
     @Cacheable
     Page<PostVO> paging(Pageable pageable, Set<Integer> includeChannelIds,Set<Long> postIds);
+
+
+    /**
+     * 获取轮播图相关的文章
+     * @param pageable
+     * @return
+     */
+    @Cacheable
+    Page<PostVO> pagingCarousel(Pageable pageable);
+
+
 
 
     /**
@@ -97,10 +108,13 @@ public interface PostService {
 
 
     /**
-     * 批量删除文章, 且刷新缓存
-     *
+     * 批量删除文章, 清空缓存
      * @param ids
      */
     @CacheEvict(allEntries = true)
     void delete(Collection<Long> ids);
+
+
+    int getPostCount();
+
 }

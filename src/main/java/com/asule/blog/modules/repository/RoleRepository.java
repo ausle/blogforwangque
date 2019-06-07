@@ -1,4 +1,8 @@
 package com.asule.blog.modules.repository;
 
-public interface RoleRepository {
+import com.asule.blog.modules.po.Role;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface RoleRepository extends JpaRepository<Role,Long>{
+
 }

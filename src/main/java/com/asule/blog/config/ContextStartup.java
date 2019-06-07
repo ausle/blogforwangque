@@ -40,16 +40,16 @@ public class ContextStartup implements ApplicationRunner,ServletContextAware{
     public void reloadOptions() {
         List<Options> dboptions = optionsService.findAll();
 
-        Map<String, String> map = new HashMap<>();
-        dboptions.forEach(opt -> {
-            if (StringUtils.isNoneBlank(opt.getKey(), opt.getValue())) {
-                map.put(opt.getKey(), opt.getValue());
-            }
-        });
-        servletContext.setAttribute("options", map);
 
         Map<String, String> configOptions = siteOptions.getOptions();
-        servletContext.setAttribute("site",configOptions);
+
+        dboptions.forEach(opt -> {
+            if (StringUtils.isNoneBlank(opt.getKey(), opt.getValue())) {
+                configOptions.put(opt.getKey(), opt.getValue());
+            }
+        });
+        servletContext.setAttribute("options", configOptions);
+//        servletContext.setAttribute("site",configOptions);
     }
 
     @Override

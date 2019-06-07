@@ -19,7 +19,6 @@ public class TagContentsDirective extends TemplateDirective {
     @Autowired
     private ChannelService channelService;
 
-
     @Autowired
     private TagService tagService;
 

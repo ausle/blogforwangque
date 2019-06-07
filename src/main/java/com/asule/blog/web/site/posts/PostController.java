@@ -51,7 +51,6 @@ public class PostController extends BaseController{
             PostVO view = postService.get(id);
             model.put("view", view);
         }
-
         return view(Views.POST_EDITING);
     }
 
@@ -66,11 +65,17 @@ public class PostController extends BaseController{
         Assert.state(StringUtils.isNotBlank(postVO.getTitle()), "标题不能为空");
         Assert.state(StringUtils.isNotBlank(postVO.getContent()), "内容不能为空");
 
-        //新建文章时，必定是登录的。
-        AccountProfile profile = getProfile();
-        if(null!=profile){
-            postVO.setAuthorId(profile.getId());
+        long authorId = postVO.getAuthorId();
+        if(authorId!=0){
+            postVO.setAuthorId(authorId);   //管理员修改某个作者文章，该文章依旧属于该作者
+        }else{
+            //此种情况，属于新建文章，谁处于登录状态，作者就属于谁
+            AccountProfile profile = getProfile();
+            if(null!=profile){
+                postVO.setAuthorId(profile.getId());
+            }
         }
+
         if (postVO.getId()>0){
             postService.update(postVO);
         }else{
@@ -90,7 +95,6 @@ public class PostController extends BaseController{
     public String getPost(@PathVariable Long id, ModelMap model,HttpServletRequest request) {
         PostVO view = postService.get(id);
         Assert.notNull(view, "该文章已被删除");
-
 
         PostVO post = new PostVO();
         BeanUtils.copyProperties(view, post);

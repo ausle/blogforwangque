@@ -3,9 +3,14 @@ server:
   port: 8080
 spring:
   profiles:
-    active: mysql
+    active: online
 
+  cache:
+    type: ehcache
+    ehcache:
+      config: classpath:ehcache.xml
 
+#@profileActive@
   freemarker:
     cache: false
     check-template-location: true
@@ -23,10 +28,11 @@ spring:
 site:
     version: 3.5.0
     location: ${user.dir}
+
     options:
         theme: default
-        site_logo: /dist/images/logo/logo.png
-        site_favicon: /dist/images/logo/m.png
+        site_logo: /dist/images/logo.png
+        site_favicon: /dist/images/logo.png
         storage_max_width: 800
         storage_limit_size: 2
         thumbnail_channel_size: 200x112
@@ -46,10 +52,11 @@ logging:
 
 shiro:
   web:
-    enabled: true
-  rememberMeManager:
-          cookie:
-              maxAge: 604800
+    enabled: false
+#  rememberMeManager:
+#          cookie:
+#              maxAge: 604800
+  enabled: false
 
 
 

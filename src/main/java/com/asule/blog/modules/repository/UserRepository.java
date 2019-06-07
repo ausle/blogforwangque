@@ -26,9 +26,10 @@ public interface UserRepository extends JpaRepository<User,Long>{
     int updateComments(@Param("id") long id, @Param("increment") int increment);
 
 
-
-
     List<User> findByIdIn(Set<Long> ids);
 
+
+    @Query(nativeQuery = true,value = "SELECT count(1) FROM asule_user")
+    int getUserCount();
 
 }

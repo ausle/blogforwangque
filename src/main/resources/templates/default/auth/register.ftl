@@ -8,13 +8,11 @@
                 <h3 class="panel-title">注册</h3>
             </div>
             <div class="panel-body">
-                <div id="message">
-
-                </div>
+                <div id="message"><#include "/default/inc/action_message.ftl"/></div>
                 <form id="submitForm" method="POST" action="register" accept-charset="UTF-8">
                     <div class="form-group ">
                         <label class="control-label" for="username">用户名</label>
-                        <input class="form-control" id="username" name="username" type="text" placeholder="字母和数字的组合, 不少于5位" required>
+                        <input class="form-control" id="username" name="username" type="text" placeholder="字母和数字的组合, 不少于4位" required>
                     </div>
                     <div class="form-group ">
                         <label class="control-label" for="username">密码</label>
@@ -32,4 +30,16 @@
         </div>
     </div>
 </div>
+
+
+<script type="text/javascript">
+
+    seajs.use("validate",function (validate) {
+        validate.register("#submitForm");
+    });
+
+</script>
+
+
+
 </@layout>

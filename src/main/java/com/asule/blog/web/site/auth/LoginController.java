@@ -4,6 +4,7 @@ import com.asule.blog.base.lang.Result;
 import com.asule.blog.modules.vo.AccountProfile;
 import com.asule.blog.web.BaseController;
 import com.asule.blog.web.Views;
+import org.apache.shiro.web.servlet.OncePerRequestFilter;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -32,5 +33,4 @@ public class LoginController extends BaseController{
         }
         return view;
     }
-
 }

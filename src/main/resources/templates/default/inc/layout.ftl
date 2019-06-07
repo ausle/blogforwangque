@@ -12,7 +12,9 @@
     <![endif]-->
 
     <#--开发调试时禁用缓存-->
+<#--
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"/>
+-->
 
 
     <meta name="keywords" content="望雀, ${keywords?default(options['site_keywords'])}">
@@ -56,8 +58,8 @@
 
     <#--都用于设置网站图标-->
     <#--apple-touch-icon-precomposed,apple设备添加网站时,默认显示网站截图。设置该属性后,显示的是定义的图标-->
-    <#--<link rel="apple-touch-icon-precomposed" href="<@resource src=options['site_favicon']/>"/>-->
-    <#--<link rel="shortcut icon" href="<@resource src=options['site_favicon']/>"/>-->
+    <link rel="apple-touch-icon-precomposed" href="${options['site_favicon']}" />
+    <link rel="shortcut icon" href="${options['site_favicon']}" />
 </head>
 
 <body>
@@ -71,9 +73,7 @@
         </div>
     </div>
 
-    <#--<#include "/default/inc/footer.ftl"/>-->
-
-
+    <#include "/default/inc/footer.ftl"/>
 
 </body>
 </html>

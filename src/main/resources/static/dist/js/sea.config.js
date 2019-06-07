@@ -11,14 +11,18 @@ seajs.config({
         'comment': 'dist/js/modules/comment',
         'plugins': 'dist/js/modules/plugins',
         'view':'dist/js/modules/view',
-        // "autohidingnavbar":"dist/js/modules/autohidingnavbar",
+        'post': 'dist/js/modules/post',/*发布文章*/
+
+
+        'validate':'dist/js/modules/validate',
+
 
         /*写markdown*/
         'markdown': 'dist/js/modules/markdown',
         'editingmarkdown': 'dist/js/modules/editingmarkdown',
 
-        /*发布文章*/
-        'post': 'dist/js/modules/post',
+
+
         'tagsinput': 'vendors/bootstrap-tagsinput/bootstrap-tagsinput',
 
 
@@ -31,11 +35,15 @@ seajs.config({
         'highlight-css': 'vendors/highlight/styles/github.css',
 
 
+        /*jquery-validation*/
+        'validation': 'vendors/jquery-validation/jquery.validate.min.js',
+        'validation-additional': 'vendors/jquery-validation/additional-methods.js',
+        'validation-localization': 'vendors/jquery-validation/localization/messages_zh.min.js',/*提示文字本地化*/
+
+
         /*表情符号插件*/
         'owo': 'vendors/owo/OwO.min.js',
         'owo-css': 'vendors/owo/OwO.min.css',
-
-
 
         //codecodemirror
         'codemirror': 'vendors/codemirror/lib/codemirror.js',
@@ -46,7 +54,6 @@ seajs.config({
 
         //把markdown编译为HTML
         'marked': 'vendors/marked/marked.min',
-
     },
 
     // 路径配置  '/'

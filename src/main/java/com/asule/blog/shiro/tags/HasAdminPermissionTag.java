@@ -10,16 +10,14 @@ import java.util.Map;
 
 public class HasAdminPermissionTag extends BaseTag{
 
-
     @Override
     public void render(Environment env, Map params, TemplateDirectiveBody body) throws IOException, TemplateException {
-
         String name = getName(params);
-
         if (isPermitted(name)){
-            body.render(env.getOut());
+            if (body!=null){
+                body.render(env.getOut());
+            }
         }
-
     }
 
 

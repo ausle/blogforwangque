@@ -108,6 +108,15 @@ public class CommentServiceImpl implements CommentService{
         return results;
     }
 
+    @Override
+    public long deleteByPostId(Long postId) {
+
+        int delete = commentRepository.deleteByPostId(postId);
+
+
+        return delete;
+    }
+
 
     private void buildParent(List<CommentVO> commentVOS, Set<Long> parentIds) {
         Map<Long, CommentVO> commentVOMap = findByIds(parentIds);

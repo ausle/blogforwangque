@@ -1,5 +1,6 @@
 package com.asule.blog.web;
 
+import com.asule.blog.base.lang.Consts;
 import com.asule.blog.base.lang.Result;
 import com.asule.blog.base.utils.MD5;
 import com.asule.blog.modules.vo.AccountProfile;
@@ -29,7 +30,6 @@ public class BaseController {
 
     protected Result<AccountProfile> executeLogin(String username, String password, boolean rememberMe) {
         Result<AccountProfile> ret = Result.failure("登录失败");
-
         if (StringUtils.isAnyBlank(username, password)) {
             return ret;
         }
@@ -66,9 +66,8 @@ public class BaseController {
 
     protected PageRequest wrapPageable(Sort sort) {
         HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
-        int pageSize = ServletRequestUtils.getIntParameter(request, "pageSize", 10);
+        int pageSize = ServletRequestUtils.getIntParameter(request, "pageSize", Consts.PAGE_DEFAULT_SIZE);
         int pageNo = ServletRequestUtils.getIntParameter(request, "pageNo", 1);
-
         if (null == sort) {
             sort = Sort.unsorted();
         }

@@ -22,7 +22,7 @@ public interface Consts {
 	/**
 	 * 默认头像
 	 */
-	String AVATAR = "/dist/images/default_head.png";
+	String AVATAR = "/dist/images/default_post.jpg";
 	
 	/**
 	 * 分隔符
@@ -34,6 +34,7 @@ public interface Consts {
 	String ROLE_ADMIN = "admin";
 
 	int PAGE_DEFAULT_SIZE = 5;
+	int PAGE_CAROUSEL_SIZE =4;
 
 	int IDENTITY_STEP = 1; // 自增步进
 

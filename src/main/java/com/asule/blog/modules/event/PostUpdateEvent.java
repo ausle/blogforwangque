@@ -11,7 +11,16 @@ public class PostUpdateEvent extends ApplicationEvent{
     private long postId;
     private long userId;
     private int action = ACTION_PUBLISH;
+    private int channelId;
 
+
+    public int getChannelId() {
+        return channelId;
+    }
+
+    public void setChannelId(int channelId) {
+        this.channelId = channelId;
+    }
 
     public PostUpdateEvent(Object source) {
         super(source);

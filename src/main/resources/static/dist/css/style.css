@@ -82,7 +82,7 @@ body {
 
 
 .upload-btn{
-    background-color: #62c162;
+    /*background-color: #62c162;*/
     line-height: 35px;
     font-weight: bold;
     color: white;
@@ -90,10 +90,13 @@ body {
     border-radius: 10px;
     width: 100%;
     margin: 0px 10px;
+    color: #868e96!important;
+
 }
 
 .upload-btn:hover{
-    background-color: #5cb85c;
+    /*background-color: #5cb85c;*/
+    color: #ea6f5a;
 }
 
 .upload-btn .upload-input{
@@ -170,7 +173,7 @@ body {
     /*align-self: center;*/
     border-style: none;
     height: 100px;
-    width: 200px;
+    width: 180px;
 }
 
 
@@ -252,6 +255,22 @@ body {
     background-color: transparent;
 }
 
+.post-item-body>.foot>.comment{
+    color: #007bff;
+    text-decoration: none;
+    background-color: transparent;
+}
+.post-item-body>.foot>.comment:hover{
+    color: #ea6f5a;
+    text-decoration: none;
+    background-color: transparent;
+}
+
+
+
+
+
+
 .post-item-body>.foot>span{
     margin-right: 10px;
 }
@@ -300,14 +319,23 @@ body {
 
 .post-channel>.list-channel {
     list-style: none;
-    padding: 10px;
+    margin-bottom: 0px;
+    padding-left: 0px;
 }
 
 .post-channel>.list-channel>.list-channel-item {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    padding: 10px 0px;
+    margin: 0px 10px;
+    border-bottom: 1px solid rgba(0,0,0,.125);
 }
+
+.post-channel>.list-channel>.list-channel-item:last-child{
+    border-bottom: 0px;
+}
+
 
 .list-channel-item>a {
     text-decoration: none;

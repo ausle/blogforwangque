@@ -13,6 +13,7 @@ import org.apache.shiro.web.subject.WebSubject;
 import org.apache.shiro.web.subject.WebSubjectContext;
 import org.apache.shiro.web.subject.support.WebDelegatingSubject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
@@ -27,6 +28,7 @@ import javax.servlet.ServletResponse;
 public class AccountSubjectFactory extends DefaultSubjectFactory{
 
     @Autowired
+    @Lazy
     private UserService userService;
 
     @Override

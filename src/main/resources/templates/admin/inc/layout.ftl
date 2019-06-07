@@ -11,13 +11,14 @@
     <![endif]-->
 
     <#--开发调试时禁用缓存-->
+<#--
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"/>
+-->
 
 
     <meta name="keywords" content="mtons, ${keywords?default(options['site_keywords'])}">
     <meta name="description" content="${description?default(options['site_description'])}">
     <title>${title?default(options['site_name'])}</title>
-
 
 
     <script type="text/javascript">
@@ -40,8 +41,6 @@
     <link rel="stylesheet" href="${base}/dist/css/skins/_all-skins.min.css">
 
 
-
-
     <script src="${base}/dist/js/jquery.min.js"></script>
     <script src="${base}/dist/vendors/layer/layer.js"></script>
     <script src="${base}/dist/vendors/bootstrap/js/bootstrap.min.js"></script>
@@ -50,23 +49,22 @@
     <script src="${base}/dist/js/adminlte.min.js"></script>
 
 
-<#--都用于设置网站图标-->
+    <#--都用于设置网站图标-->
     <#--apple-touch-icon-precomposed,apple设备添加网站时,默认显示网站截图。设置该属性后,显示的是定义的图标-->
-    <#--<link rel="apple-touch-icon-precomposed" href="<@resource src=options['site_favicon']/>"/>-->
-    <#--<link rel="shortcut icon" href="<@resource src=options['site_favicon']/>"/>-->
+    <link rel="apple-touch-icon-precomposed" href="${options['site_favicon']}" />
+    <link rel="shortcut icon" href="${options['site_favicon']}" />
 </head>
 
 <body class="hold-transition skin-blue sidebar-mini">
 
 
-
     <header class="main-header">
 
-        <a href="${base}" class="logo" target="_blank">
+        <a href="${base}/index" class="logo" target="_blank">
             <!-- mini logo for sidebar mini 50x50 pixels -->
-            <span class="logo-mini"><b>望雀</b></span>
+            <span class="logo-mini"><b>${options['site_name']}</b></span>
             <!-- logo for regular state and mobile devices -->
-            <span class="logo-lg"><b>望雀</b></span>
+            <span class="logo-lg"><b>${options['site_name']}</b></span>
         </a>
 
         <nav class="navbar navbar-static-top">
@@ -129,12 +127,45 @@
                 </div>
             </div>
 
+
+            <script type="text/javascript">
+
+                $(function () {
+//                    $('.sidebar-menu li>a').on('click',function () {
+//                        console.log("click--->"+this.href);
+//                        var $parent=$(this).parent().addClass("active");
+//
+//                        //find方法找寻的是该集合的子节点。而不是其本身
+//
+//                        $parent.siblings().find("li").removeClass("active");
+//                    });
+
+                    $('.sidebar-menu a').each(function () {
+//                        console.log("href--->"+this.href);
+//                        console.log("window--->"+window.location.href);
+                        if(this.href===window.location.href){
+
+                            $(this).parent().addClass("active");
+
+                        }else{
+                            $(this).parent().removeClass("active");
+                        }
+
+                    })
+
+
+                })
+
+
+            </script>
+
+
             <#--sidebar menu-->
             <ul class="sidebar-menu" data-widget="tree">
                 <li class="header">MENUS</li>
 
-                <li class="active treeview">
-                    <a href="${base}/admin">
+                <li class="active">
+                    <a href="${base}/admin" >
                         <i class="fa fa-dashboard"></i> <span>仪表盘</span>
                     </a>
                 </li>

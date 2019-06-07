@@ -33,7 +33,7 @@ public class TagServiceImpl implements TagService {
     */
     @Override
     public void batchUpdate(String names, long latestPostId) {
-        //没有标签的文章，直接return
+        //没有标签的文章，直接return。发表文章时，标签为必选项。因为我是根据post-tag，通过查询tag对应的postid，去post表去查文章的。
         if (StringUtils.isBlank(names.trim())) {
             return;
         }
@@ -47,10 +47,11 @@ public class TagServiceImpl implements TagService {
             Tag po = tagRepository.findByName(name);
             if (po != null) {
                 PostTag pt = postTagRepository.findByPostIdAndTagId(latestPostId, po.getId());
+                //若是编辑状态，修改更新时间就行了。
                 if (null != pt) {
                     pt.setWeight(System.currentTimeMillis());
                     postTagRepository.save(pt);
-                    continue;
+                    continue;       //直接下一个循环
                 }
                 po.setPosts(po.getPosts() + 1);
                 po.setUpdated(current);

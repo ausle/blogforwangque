@@ -87,8 +87,23 @@ public class User implements Serializable {
 	 */
 	private int status;
 
+
+
+	@Column(name = "role_id",columnDefinition = "int(11) NOT NULL DEFAULT '0'")
+	private int roleId;
+
+
 	public User() {
 
+	}
+
+
+	public int getRoleId() {
+		return roleId;
+	}
+
+	public void setRoleId(int roleId) {
+		this.roleId = roleId;
 	}
 
 	public User(long id) {

@@ -5,25 +5,56 @@
         <div class="col-xs-12 col-md-8">
 
             <div id="myCarousel" class="carousel slide">
-                <!-- 轮播（Carousel）指标 -->
-                <ol class="carousel-indicators">
-                    <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
-                    <li data-target="#myCarousel" data-slide-to="1"></li>
-                    <li data-target="#myCarousel" data-slide-to="2"></li>
-                </ol>
 
-                <!-- 轮播（Carousel）项目 -->
-                <div class="carousel-inner">
-                    <div class="item active carousel_img">
-                        <img src="${base}/dist/images/girl.jpg" alt="First slide">
-                    </div>
-                    <div class="item carousel_img">
-                        <img src="${base}/dist/images/girl.jpg" alt="Second slide">
-                    </div>
-                    <div class="item carousel_img">
-                        <img src="${base}/dist/images/girl.jpg" alt="Third slide">
-                    </div>
-                </div>
+
+
+                <#--759*416-->
+
+
+
+
+                    <@carousels>
+
+                        <!-- 轮播（Carousel）指标 -->
+                        <ol class="carousel-indicators">
+                            <#list carousels.content as carousel>
+
+                                <li data-target="#myCarousel" data-slide-to=${carousel_index}
+                                    <#if carousel_index==0>
+                                        class="active"
+                                    </#if>></li>
+                            </#list>
+                        </ol>
+
+                        <!-- 轮播（Carousel）项目 -->
+                            <div class="carousel-inner">
+                                <#list carousels.content as carousel>
+                                    <div
+                                        <#if carousel_index==0>
+                                                class="item carousel_img active"
+                                        <#else>
+                                                class="item carousel_img"
+                                        </#if>>
+                                        <a href="${base}/post/${carousel.id}" target="_blank">
+                                            <#if carousel.thumbnail?trim?length gt 1>
+                                                <img src="${carousel.thumbnail}" style="width: 100%;height: 416px">
+                                            <#else>
+                                                <img src="${base}/dist/images/default_post.jpg" style="width: 100%;height: 416px">
+                                            </#if>
+                                        </a>
+                                    </div>
+                                </#list>
+                            </div>
+                    </@carousels>
+
+                <script type="text/javascript">
+                    /*开始轮播*/
+                    $(function () {
+                        $("#myCarousel").carousel('cycle');
+                    });
+
+                </script>
+
                 <!-- 轮播（Carousel）导航 -->
                 <a class="left carousel-control" href="#myCarousel" role="button" data-slide="prev">
                     <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
@@ -55,7 +86,7 @@
                                         <#if result.thumbnail?trim?length gt 1>
                                             <img src="${result.thumbnail}">
                                             <#else>
-                                            <img src="${base}/dist/images/girl.jpg">
+                                            <img src="${base}/dist/images/default_post.jpg">
                                         </#if>
                                       </a>
                                 </div>
@@ -63,7 +94,7 @@
                                 <div class="post-item-body">
                                     <div class="head">
                                         <img class="avatar" src="${base}/dist/images/default_head.png">
-                                        <span>ASULE</span>
+                                        <span>${result.author.username}</span>
                                         <span><i class="fa fa-calendar-times-o ml-2 mr-1"></i>${timeAgo(result.created)}</span>
                                     </div>
 
@@ -78,13 +109,13 @@
                                     </p>
 
                                     <div class="foot">
-                                        <a href="#" target="_blank" class="tag">
+                                        <a class="tag">
                                             <i class="fa fa-book mr-1"></i>
                                             ${result.tags}
                                         </a>
                                         <span><i class="fa fa-eye ml-2 mr-1"></i>${result.views}</span>
 
-                                        <a target="_blank" title="查看文章评论">
+                                        <a title="查看文章评论" class="comment">
                                             <i class="fa fa-comments ml-2 mr-1"></i>${result.comments}</a>
                                     </div>
                                 </div>
@@ -123,10 +154,10 @@
                         <img src="/dist/images/weibo.png">
                         <a href="https://weibo.com/2378583930/profile?topnav=1&wvr=6" target="_blank">微博</a>
                     </div>
-                    <div>
-                        <img src="/dist/images/csdn.png">
-                        <a href="https://blog.csdn.net/u012834186" target="_blank">CSDN</a>
-                    </div>
+                    <#--<div>-->
+                        <#--<img src="/dist/images/csdn.png">-->
+                        <#--<a href="https://blog.csdn.net/u012834186" target="_blank">CSDN</a>-->
+                    <#--</div>-->
                 </div>
             </div>
 

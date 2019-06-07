@@ -24,8 +24,8 @@ public interface ChannelRepository extends JpaRepository<Channel,Integer>{
 
 
     @Modifying
-    @Query(value = "update Channel c set c.amount=c.amount+1 where c.id= :channelId")
-    void updatePostAmount(@Param("channelId") Integer channelId);
+    @Query(value = "update Channel c set c.amount=c.amount+ :increment where c.id= :channelId")
+    void updatePostAmount(@Param("channelId") Integer channelId,@Param("increment") int increment);
 
 
 //    @Query(value = "update Channel c set c.weight=:weight where c.id= :channelId")
@@ -40,4 +40,8 @@ public interface ChannelRepository extends JpaRepository<Channel,Integer>{
 
     void deleteById(Integer channelId);
 
+
+
+    @Query(nativeQuery = true,value = "SELECT COUNT(1) FROM asule_channel")
+    int getChaneelCount();
 }

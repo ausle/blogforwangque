@@ -14,7 +14,6 @@
 	<name>blog</name>
 	<description>my first blog</description>
 
-
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<java.version>1.8</java.version>
@@ -38,6 +37,12 @@
 
 
 	<dependencies>
+
+		<!--仅在编译环境时有效-->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-tomcat</artifactId>
+		</dependency>
 
 
 		<!--工具包-->
@@ -129,7 +134,18 @@
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
+			<!--排除tomcat依赖-->
+			<exclusions>
+				<exclusion>
+					<groupId>org.springframework.boot</groupId>
+					<artifactId>spring-boot-starter-tomcat</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
+
+
+
+
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
@@ -180,12 +196,50 @@
 			<version>${shiro}</version>
 		</dependency>
 
+		<!-- ehcache -->
+		<dependency>
+			<groupId>net.sf.ehcache</groupId>
+			<artifactId>ehcache</artifactId>
+		</dependency>
+		<!--开启cache缓存-->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-cache</artifactId>
+		</dependency>
 
 
 
 	</dependencies>
 
+
+	<profiles>
+		<profile>
+			<id>local</id>
+			<properties>
+				<profileActive>local</profileActive>
+			</properties>
+		</profile>
+
+		<profile>
+			<id>online</id>
+			<activation>
+				<activeByDefault>true</activeByDefault>
+			</activation>
+			<properties>
+				<profileActive>online</profileActive>
+			</properties>
+		</profile>
+
+	</profiles>
+
+
+
 	<build>
+		<finalName>blog</finalName>
+
+
+
+
 		<plugins>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>

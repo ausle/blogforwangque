@@ -13,7 +13,6 @@
         </#if>
         <input type="hidden" id="thumbnail" name="thumbnail" value="${view.thumbnail}"/>
 
-
         <div class="row">
             <div class="col-md-8 col-sm-8">
                 <div class="form-group">

@@ -22,7 +22,6 @@ public interface CommentService {
     /**
      * 获取评论列表
      */
-
     Page<CommentVO> pagingByPostId(Pageable pageable, long postId);
 
 
@@ -32,6 +31,16 @@ public interface CommentService {
      * @return
      */
     Map<Long,CommentVO> findByIds(Set<Long> parentId);
+
+
+    /**
+     * 删除某文章的评论
+     */
+
+    long deleteByPostId(Long postId);
+
+
+
 
 
 

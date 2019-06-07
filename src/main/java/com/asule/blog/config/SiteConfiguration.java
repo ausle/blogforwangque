@@ -6,6 +6,7 @@ import com.alibaba.fastjson.support.config.FastJsonConfig;
 import com.alibaba.fastjson.support.spring.FastJsonHttpMessageConverter;
 import com.asule.blog.modules.template.TemplateDirective;
 import com.asule.blog.modules.template.method.TimeAgoMethod;
+import com.asule.blog.shiro.tags.ShiroTags;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.context.ApplicationContext;
@@ -20,7 +21,13 @@ import java.util.Map;
 @Configuration
 public class SiteConfiguration {
 
-
+    /*
+        configuration实例
+        是存储freemarker应用级设置的核心部分，
+        同时处理创建和缓存预解析模板的工作。
+        
+        configuration是应用级别的单例
+    */
     @Autowired
     private freemarker.template.Configuration configuration;
 
@@ -33,8 +40,19 @@ public class SiteConfiguration {
         Map<String, TemplateDirective> map = applicationContext.getBeansOfType(TemplateDirective.class);
         map.forEach((k, v) -> configuration.setSharedVariable(v.getName(), v));
         configuration.setSharedVariable("timeAgo", new TimeAgoMethod());
-//        configuration.setSharedVariable("shiro", new ShiroTags());
+        //添加到根数据模型中
+        configuration.setSharedVariable("shiro", new ShiroTags());
     }
+
+
+
+//    root
+//        shiro
+//            hasAdminPermission
+//            xxxxxx
+//            dedeeded
+//            dededede
+//
 
 
 

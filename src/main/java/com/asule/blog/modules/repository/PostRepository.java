@@ -36,6 +36,10 @@ public interface PostRepository extends JpaRepository<Post,Long>,JpaSpecificatio
 
 
 
+    @Query(nativeQuery = true,value = "SELECT COUNT(1) FROM asule_post")
+    int getPostCount();
+
+
     @Modifying
     @Query("update from Post set views=views+:increment where id=:postId")
     int identityViews(@Param("postId")long postId,@Param("increment")int increment);

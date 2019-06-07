@@ -13,11 +13,11 @@
             <div class="modal-body">
                     <div class="form-group">
                         <label class="control-label" for="username">账号</label>
-                        <input id="ajax_login_username" class="form-control" name="username" type="text" value="asule" required>
+                        <input id="ajax_login_username" class="form-control" name="username" type="text" required>
                     </div>
                     <div class="form-group">
                         <label class="control-label" for="password">密码</label>
-                        <input id="ajax_login_password" class="form-control" name="password" type="password" value="qwerty" required>
+                        <input id="ajax_login_password" class="form-control" name="password" type="password" required>
                     </div>
                     <div class="form-group">
                         <button type="submit" class="btn btn-success btn-block" id="ajax_login_submit">
@@ -87,7 +87,12 @@
                         <span>${profile.name}</span>
                     </a>
                     <ul class="dropdown-menu">
-                        <li><a>我的主页</a></li>
+
+                         <@shiro.hasAdminPermission name="admin">
+                             <li><a href="${base}/admin">后台管理</a></li>
+                         </@shiro.hasAdminPermission>
+
+
                         <li><a href="${base}/logout">退出</a></li>
                     </ul>
                 </li>
@@ -101,11 +106,8 @@
 </nav>
 
 <script type="text/javascript">
-
-    seajs.use('main',function (main) {
-        main.init();
+    seajs.use('main',function () {
         $('.site-header').autoHidingNavbar();
     });
-
 </script>
 

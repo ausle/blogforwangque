@@ -22,14 +22,13 @@
                         <div class="box-header with-border">
                             <h3 class="box-title">文章列表</h3>
                             <div class="box-tools">
-                                <a class="btn btn-default btn-sm" href="${base}/admin/channel/view">新建</a>
-                                <a class="btn btn-default btn-sm" href="${base}/admin/channel/view">批量删除</a>
+                                <a class="btn btn-default btn-sm" href="${base}/post/editing">新建</a>
+                                <a class="btn btn-default btn-sm" href="javascript:;" data-action="batch_del">批量删除</a>
                             </div>
                         </div>
 
 
                         <div class="box-body">
-
                             <form id="qForm" class="form-inline search-row">
                                 <input type="hidden" name="pageNo" value="${page.number + 1}"/>
                                 <div class="form-group">
@@ -51,7 +50,7 @@
 
                                     <thead>
                                         <tr>
-                                            <th width="30"><input type="checkbox" class="checkall"></th>
+                                            <th width="30"><input type="checkbox" class="checkall" onclick="selectAll(this.checked)"></th>
                                             <th width="80">#</th>
                                             <th>文章标题</th>
                                             <th width="120">作者</th>
@@ -71,7 +70,11 @@
                                                 </td>
 
                                                 <td>
-                                                    <img src="${base}${row.thumbnail}" style="width: 90px; height: 50px;">
+                                                    <#if row.thumbnail?trim?length gt 1>
+                                                        <img src="${row.thumbnail}" style="width: 90px; height: 50px;">
+                                                    <#else>
+                                                        <img src="${base}/dist/images/default_post.jpg" style="width: 90px; height: 50px;">
+                                                    </#if>
                                                 </td>
 
                                                 <td>
@@ -100,12 +103,18 @@
                                 </table>
                             </div>
                         </div>
+
+                        <div class="box-footer">
+
+                                <@utils.pager pageURI,page/>
+
+                        </div>
+
+
                     </div>
                 </div>
             </div>
-
     </section>
-
 
 
 <script type="text/javascript">
@@ -122,14 +131,56 @@
     }
 
 
-    function doDelete(ids) {
-        $.get('${base}/admin/post/delete',{id:ids},reload);
+    var selectAll=function(selectAllStatus) {
+        if(selectAllStatus){
+            $('input[type=checkbox][name=id]').each(function (index,element) {
+                element.checked=true;
+            })
+        }else{
+            $('input[type=checkbox][name=id]').each(function (index,element) {
+                element.checked=false;
+            })
+        }
     }
 
+
+    /*
+
+        serialize创建以标准的URL编码表示的文本字符串。
+        jquery.param方法创建数组或对象的序列化表示形式。
+
+        ids=["18","19"]
+        $.param({ids:ids})  会对参数转换为序列化的字符串。 id%5B%5D=18&id%5B%5D=17
+        $.param({ids:ids},true) 规定使用浅层序列化，只进行参数序列化  id=18&id=17
+
+     */
+
+//    $(function () {
+//        $('#qForm').submit(function () {
+//            alert($(this).serialize());
+//            return false;
+//        });
+//    })
+
+
+    function doDelete(ids) {
+        $.get('${base}/admin/post/delete',$.param({id:ids},true),reload);
+    }
 
 
     $(function () {
         $("#dataGrid a[rel='delete']").bind("click",function () {
+            var id=$(this).attr("data-id");
+            layer.confirm('确定删除选择的文章吗?',{
+                btn:['确定','取消']
+            },function () {
+                doDelete(id);
+            },function () {
+            });
+        });
+
+
+        $("a[data-action='batch_del']").bind("click",function () {
 
             var check_length=$("input[type=checkbox][name=id]:checked").length;
 
@@ -137,7 +188,6 @@
                 layer.msg("请至少选择一项", {icon: 2});
                 return false;
             }
-
 
             var ids = [];
             $("input[type=checkbox][name=id]:checked").each(function(){

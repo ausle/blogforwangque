@@ -40,26 +40,22 @@ public class PostController extends BaseController{
     private ChannelService channelService;
 
     @RequestMapping("/list")
-    public String list(String title, ModelMap model, HttpServletRequest request) {
-//        long id = ServletRequestUtils.getLongParameter(request, "id", Consts.ZERO);
-
-//
-
-//        model.put("page", page);
-//        model.put("title", title);
-//        model.put("id", id);
-//        model.put("channelId", channelId);
-//        model.put("channels", channelService.findAll(Consts.IGNORE));
-
-
-        //默认查询所有类别
+    public String list(ModelMap model, HttpServletRequest request) {
         int channelId = ServletRequestUtils.getIntParameter(request, "channelId", 0);
-
         Pageable pageable = wrapPageable(Sort.by(Sort.Direction.DESC, "weight", "created"));
+        String title = ServletRequestUtils.getStringParameter(request, "title", "");
+
         Page<PostVO> page = postService.paging4Admin(pageable, channelId, title);
 
+        //查询所有类别，包括状态为隐藏的
         List<Channel> channels = channelService.findAll(Consts.IGNORE_CHANNEL_STATUS);
         model.put("page", page);
+
+        model.put("channelId", channelId);
+        model.put("title", title);
+
+        model.put("pageURI","?channelId="+channelId+"&title="+title);
+
         model.put("channels",channels);
         return "/admin/post/list";
     }
@@ -88,7 +84,6 @@ public class PostController extends BaseController{
     @RequestMapping(value = "/delete", method = RequestMethod.GET)
     @ResponseBody
     public Result toUpdate(@RequestParam(value = "id")List<Long> ids, ModelMap model) {
-
         Result data = Result.failure("操作失败");
         if (ids != null) {
             try {
@@ -100,11 +95,4 @@ public class PostController extends BaseController{
         }
         return data;
     }
-
-
-
-
-
-
-
 }

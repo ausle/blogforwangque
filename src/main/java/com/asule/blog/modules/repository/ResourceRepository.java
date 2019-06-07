@@ -22,4 +22,11 @@ public interface ResourceRepository extends JpaRepository<Resource,Long>{
     int updateAmount(@Param("md5s") Collection<String> md5s, @Param("increment") long increment);
 
 
+
+    @Modifying
+    @Query("update Resource set amount = amount - :increment where id in (:ids)")
+    int updateAmountByRid(@Param("ids") Collection<Long> ids,@Param("increment") long increment);
+
+
+
 }

@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ehcache updateCheck="false" name="Cache">
+
+
+	<!--
+		ehcache分为内存和磁盘两级，定义缓存的路径。
+		磁盘存储:将缓存中暂时不使用的对象,转移到硬盘,类似于Windows系统的虚拟内存
+        path:指定在硬盘上存储对象的路径
+        path可以配置的目录有：
+            user.home（用户的家目录）
+            user.dir（用户当前的工作目录）
+            java.io.tmpdir（默认的临时目录）
+            ehcache.disk.store.dir（ehcache的配置目录）
+            绝对路径（如：d:\\ehcache）
+        查看路径方法：String tmpDir = System.getProperty("java.io.tmpdir");
+	-->
+	<diskStore path="java.io.tmpdir/ehcache"/>
+
+	<!--默认缓存策略。若找不到定义的缓存时，使用该缓存策略-->
+
+	<!--
+		maxElementsInMemory：缓存最大数目
+		eternal：对象是否永久有效，一但设置为true，timeout将不起作用
+		overflowToDisk：当系统宕机时，是否保存到磁盘
+		timeToIdleSeconds：设置对象在失效前的允许闲置时间，不设置默认为0，即永久存活。
+		timeToLiveSeconds：设置对象在失效前允许存活时间。不设置默认为0，即永久存活。
+
+
+		memoryStoreEvictionPolicy：可选策略有：LRU（最近最少使用，默认策略）、FIFO（先进先出）、LFU（最少访问次数）
+			FIFO，first in first out，先进先出
+			LFU， Less Frequently Used，一直以来最少被使用的。如上面所讲，缓存的元素有一个hit属性，hit值最小的将会被清出缓存。 
+			LRU，Least Recently Used，最近最少使用的，缓存的元素有一个时间戳，当缓存容量满了，而又需要腾出地方来缓存新的元素的时候，
+									  那么现有缓存元素中时间戳离当前时间最远的元素将被清出缓存。
+	-->
+
+	<defaultCache maxElementsInMemory="100"
+				  eternal="false"
+				  timeToIdleSeconds="180"
+				  timeToLiveSeconds="360"
+				  overflowToDisk="false" />
+	 
+	<cache name="postCaches"
+		eternal="false"
+		maxElementsOnDisk="999"
+		maxElementsInMemory="50"
+		overflowToDisk="true"
+		timeToIdleSeconds="60"
+		timeToLiveSeconds="120"
+		memoryStoreEvictionPolicy="LRU"/>
+	
+	<cache name="userCaches"
+		   eternal="false"
+		   maxElementsOnDisk="999"
+		   maxElementsInMemory="50"
+		   overflowToDisk="true"
+		   timeToIdleSeconds="60"
+		   timeToLiveSeconds="120"
+		   memoryStoreEvictionPolicy="LRU"/>
+
+</ehcache>

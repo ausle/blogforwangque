@@ -88,11 +88,10 @@ public class PostServiceImpl implements PostService{
 
 
         //类型中的文章数量+1
-        channelRepository.updatePostAmount(po.getChannelId());
+        channelRepository.updatePostAmount(po.getChannelId(),Consts.IDENTITY_STEP);
 
         //更新tag，post-tag两张表相关数据
         tagService.batchUpdate(po.getTags(),po.getId());
-
 
         //保存文章内容
         PostAttribute attr = new PostAttribute();
@@ -101,6 +100,7 @@ public class PostServiceImpl implements PostService{
         postAttributeRepository.save(attr);
 
         countResource(po.getId(), null,  attr.getContent());
+        //发送一个发布文章的事件，主要作用是更新用户表中，该用户的发表文章的数量
         onPushEvent(po, PostUpdateEvent.ACTION_PUBLISH);
 
         return po.getId();
@@ -153,6 +153,12 @@ public class PostServiceImpl implements PostService{
     }
 
     @Override
+    public Page<PostVO> pagingCarousel(Pageable pageable) {
+        Page<Post> pages = postRepository.findAll(pageable);
+        return  new PageImpl<>(toPostVO(pages.getContent()),pageable,pages.getTotalElements());
+    }
+
+    @Override
     public Page<PostVO> paging4Admin(Pageable pageable, Integer channelId, String title) {
         //实现带条件查询的分页
         Specification specification= new Specification<PostVO>() {
@@ -182,17 +188,44 @@ public class PostServiceImpl implements PostService{
 
     @Override
     public void delete(Collection<Long> ids) {
-
-
         List<Post> postList = postRepository.findAllById(ids);
 
-
         postList.forEach(post -> {
-
             postRepository.delete(post);
 
+            //删除文章-内容表相关内容
+            postAttributeRepository.deleteById(post.getId());
 
+
+            //删除文章-资源表内容
+            List<PostResource> postResourceList = postResourceRepository.findByPostId(post.getId());
+            postResourceRepository.deleteByPostId(post.getId());
+
+            List<Long> resourceId=new ArrayList<>();
+            postResourceList.forEach(postResource ->
+                    resourceId.add(postResource.getResourceId())
+            );
+
+            //文章需有引用图片资源，才可减少
+            if (resourceId.size()>0){
+                //资源表相关资源引用次数减少1
+                resourceRepository.updateAmountByRid(resourceId,1);
+            }
+
+
+            //发一个删除文章的事件，减少用户表，文章数量
+            onPushEvent(post, PostUpdateEvent.ACTION_DELETE);
         });
+    }
+
+
+
+
+
+
+    @Override
+    public int getPostCount() {
+        return postRepository.getPostCount();
     }
 
 
@@ -267,12 +300,12 @@ public class PostServiceImpl implements PostService{
     }
 
 
-    //发送一个发布文章的事件，主要作用是更新用户表中，该用户的发表文章的数量
     private void onPushEvent(Post post, int action) {
         PostUpdateEvent event = new PostUpdateEvent(System.currentTimeMillis());
         event.setPostId(post.getId());
         event.setUserId(post.getAuthorId());
         event.setAction(action);
+        event.setChannelId(post.getChannelId());
         applicationContext.publishEvent(event);
     }
 

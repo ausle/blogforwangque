@@ -38,7 +38,6 @@ public class IndexController extends BaseController {
         int channelId = ServletRequestUtils.getIntParameter(request, "channelId", 0);//默认获取所有类别文章
         long tagId = ServletRequestUtils.getLongParameter(request, "tagId", 0);
 
-
         model.put("channelId",channelId);
         model.put("tagId",tagId);
         model.put("order",order);
@@ -46,8 +45,6 @@ public class IndexController extends BaseController {
 
         String requestURI = request.getRequestURI();
         model.put("requestURI",requestURI);
-
-
 
         model.put("sortURI",requestURI+"?channelId="+channelId+"&tagId="+tagId);
         model.put("pageURI",requestURI+"?order="+order+"&channelId="+channelId+"&tagId="+tagId);

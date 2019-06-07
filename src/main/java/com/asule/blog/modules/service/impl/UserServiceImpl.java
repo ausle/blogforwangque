@@ -96,4 +96,19 @@ public class UserServiceImpl implements UserService{
 
         return map;
     }
+
+    @Override
+    public UserVO findUserVO(Long id) {
+
+
+        User user = userRepository.findById(id).get();
+
+
+        return BeanMapUtils.copy(user);
+    }
+
+    @Override
+    public int getUserCount() {
+        return userRepository.getUserCount();
+    }
 }

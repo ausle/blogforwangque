@@ -1,6 +1,7 @@
 package com.asule.blog.modules.service;
 
 import com.asule.blog.modules.po.Channel;
+import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 import java.util.Map;
@@ -35,5 +36,14 @@ public interface ChannelService {
      */
     int update(Channel channel);
 
+
+    int getChannelCount();
+
+
+    /**
+     * channel中文章数-1
+     * @param channelId
+     */
+    void updatePostAmount(Integer channelId);
 
 }
